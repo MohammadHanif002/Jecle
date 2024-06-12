@@ -1,6 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jecle/views/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _signUp(BuildContext context) async {
+    // Simulate signup process and save username
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', _usernameController.text);
+
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // Gunakan userCredential di sini jika diperlukan
+      print('User UID: ${userCredential.user?.uid}');
+
+      // Navigasi ke halaman LoginScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+      // Navigasi ke halaman lain atau tampilkan pesan sukses
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration successful')),
+      );
+    } catch (e) {
+      // Tampilkan pesan error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +98,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   TextFormField(
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey[300],
@@ -78,6 +118,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey[300],
@@ -97,6 +138,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   TextFormField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
@@ -123,6 +165,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
+                        _signUp(context); // Panggil metode _signUp
                         // Implement sign up logic here
                       },
                       child: Text(

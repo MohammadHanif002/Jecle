@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class IsuSampahScreen extends StatelessWidget {
   @override
@@ -42,7 +43,10 @@ class IsuSampahScreen extends StatelessWidget {
                   date: '10 Oktober, 2020',
                   description:
                       'Berbagai konsep dan informasi penting dan mutakhir terkait pengolahan dan pengelolaan sampah di Indonesia diperkenalkan dan dipaparkan oleh ....',
+                  url:
+                      'https://enviro.teknik.unej.ac.id/tag/pengelolaan/#:~:text=Berbagai%20konsep%20dan%20informasi%20penting,Lingkungan%2C%20Pusat%20Teknologi%20Lingkungan%2C%E2%80%A6',
                 ),
+
                 IsuSampahItem(
                   title:
                       'Tiga Permasalahan Mendasar Sampah yang Tidak Kunjung Selesai',
@@ -50,6 +54,8 @@ class IsuSampahScreen extends StatelessWidget {
                   date: '7 April, 2023',
                   description:
                       'Sampah terus menjadi masalah meski banyak inovasi dalam pengelolaannya. Sampah kantong plastik dan kemasan produk kebutuhan sehari-hari ...',
+                  url:
+                      'https://www.kompas.id/baca/humaniora/2023/04/06/tiga-permasalahan-mendasar-sampah-yang-tidak-kunjung-selesai',
                 ),
                 // Tambahkan item lainnya jika diperlukan
               ],
@@ -66,13 +72,23 @@ class IsuSampahItem extends StatelessWidget {
   final String source;
   final String date;
   final String description;
+  final String url;
 
   const IsuSampahItem({
     required this.title,
     required this.source,
     required this.date,
     required this.description,
+    required this.url,
   });
+
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +124,7 @@ class IsuSampahItem extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: ElevatedButton(
-              onPressed: () {
-                // Implementasi logika untuk baca selengkapnya
-              },
+              onPressed: () => _launchURL(url),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromRGBO(48, 133, 195, 1),
               ),

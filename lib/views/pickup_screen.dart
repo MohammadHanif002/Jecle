@@ -93,18 +93,41 @@ class _PickUpScreenState extends State<PickUpScreen> {
                         padding: EdgeInsets.all(4.0),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color.fromRGBO(210, 231, 234, 1)),
+                            color: Color.fromRGBO(160, 217, 149, 1)),
+                        child: Image.asset(
+                          'assets/icons/iconKardus.png', // Path ke gambar ikon
+                          width: 24, // Sesuaikan ukuran ikon
+                          height: 24,
+                        ),
+                      ),
+                      title: Text('Kardus'),
+                      onTap: () {
+                        // Logika ketika opsi dipilih
+                        setState(() {
+                          selectedOption = 'Option 1';
+                        });
+                      },
+                    ),
+                    Divider(), // Garis di antara opsi
+                    ListTile(
+                      leading: Container(
+                        padding: EdgeInsets.all(4.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(210, 231, 234,
+                              1), // Warna latar belakang lingkaran
+                        ),
                         child: Image.asset(
                           'assets/icons/iconBotolPlastik.png', // Path ke gambar ikon
                           width: 24, // Sesuaikan ukuran ikon
                           height: 24,
                         ),
                       ),
-                      title: Text('Option 1'),
+                      title: Text('Botol Plastik'),
                       onTap: () {
                         // Logika ketika opsi dipilih
                         setState(() {
-                          selectedOption = 'Option 1';
+                          selectedOption = 'Option 2';
                         });
                       },
                     ),
@@ -123,15 +146,15 @@ class _PickUpScreenState extends State<PickUpScreen> {
                           height: 24,
                         ),
                       ),
-                      title: Text('Option 2'),
+                      title: Text('Botol Kaca'),
                       onTap: () {
                         // Logika ketika opsi dipilih
                         setState(() {
-                          selectedOption = 'Option 2';
+                          selectedOption = 'Option 3';
                         });
                       },
                     ),
-                    Divider(), // Garis di antara opsi
+                    Divider(),
                     ListTile(
                       leading: Container(
                         padding: EdgeInsets.all(4.0),
@@ -146,14 +169,62 @@ class _PickUpScreenState extends State<PickUpScreen> {
                           height: 24,
                         ),
                       ),
-                      title: Text('Option 3'),
+                      title: Text('Kertas'),
                       onTap: () {
                         // Logika ketika opsi dipilih
                         setState(() {
-                          selectedOption = 'Option 3';
+                          selectedOption = 'Option 4';
                         });
                       },
                     ),
+                    Divider(),
+                    ListTile(
+                      leading: Container(
+                        padding: EdgeInsets.all(4.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(237, 164, 255,
+                              1), // Warna latar belakang lingkaran
+                        ),
+                        child: Image.asset(
+                          'assets/icons/iconBotolSkincare.png', // Path ke gambar ikon
+                          width: 24, // Sesuaikan ukuran ikon
+                          height: 24,
+                        ),
+                      ),
+                      title: Text('Botol Skincare'),
+                      onTap: () {
+                        // Logika ketika opsi dipilih
+                        setState(() {
+                          selectedOption = 'Option 5';
+                        });
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Container(
+                        padding: EdgeInsets.all(4.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(
+                              221, 44, 44, 1), // Warna latar belakang lingkaran
+                        ),
+                        child: Image.asset(
+                          'assets/icons/iconKaleng.png', // Path ke gambar ikon
+                          width: 24, // Sesuaikan ukuran ikon
+                          height: 24,
+                        ),
+                      ),
+                      title: Text('Botol Kaleng'),
+                      onTap: () {
+                        // Logika ketika opsi dipilih
+                        setState(() {
+                          selectedOption = 'Option 6';
+                        });
+                      },
+                    ),
+                    Divider(),
+
                     // Tambahkan opsi lainnya sesuai kebutuhan
                   ],
                   Padding(
@@ -179,91 +250,21 @@ class _PickUpScreenState extends State<PickUpScreen> {
                           width: 24, // Sesuaikan ukuran ikon
                           height: 24,
                         ), // Icon di pojok kiri
-                        suffixIcon: IconButton(
-                          // Icon di pojok kanan
-                          icon: isOptionsVisible
-                              ? Icon(Icons.arrow_drop_down)
-                              : Icon(Icons.arrow_right),
-                          onPressed: () {
-                            // Toggle untuk menampilkan/sembunyikan opsi
-                            setState(() {
-                              isOptionsVisible = !isOptionsVisible;
-                            });
-                          },
-                        ),
+                        // suffixIcon: IconButton(
+                        //   // Icon di pojok kanan
+                        //   icon: isOptionsVisible
+                        //       ? Icon(Icons.arrow_drop_down)
+                        //       : Icon(Icons.arrow_right),
+                        //   onPressed: () {
+                        //     // Toggle untuk menampilkan/sembunyikan opsi
+                        //     setState(() {
+                        //       isOptionsVisible = !isOptionsVisible;
+                        //     });
+                        //   },
+                        // ),
                       ),
                     ),
                   ),
-                  // Menampilkan opsi jika isOptionsVisible bernilai true
-                  if (isOptionsVisible) ...[
-                    ListTile(
-                      leading: Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromRGBO(210, 231, 234, 1)),
-                        child: Image.asset(
-                          'assets/icons/iconBotolPlastik.png', // Path ke gambar ikon
-                          width: 24, // Sesuaikan ukuran ikon
-                          height: 24,
-                        ),
-                      ),
-                      title: Text('Option 1'),
-                      onTap: () {
-                        // Logika ketika opsi dipilih
-                        setState(() {
-                          selectedOption = 'Option 1';
-                        });
-                      },
-                    ),
-                    Divider(), // Garis di antara opsi
-                    ListTile(
-                      leading: Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(108, 196, 161,
-                              1), // Warna latar belakang lingkaran
-                        ),
-                        child: Image.asset(
-                          'assets/icons/iconBotolKaca.png', // Path ke gambar ikon
-                          width: 24, // Sesuaikan ukuran ikon
-                          height: 24,
-                        ),
-                      ),
-                      title: Text('Option 2'),
-                      onTap: () {
-                        // Logika ketika opsi dipilih
-                        setState(() {
-                          selectedOption = 'Option 2';
-                        });
-                      },
-                    ),
-                    Divider(), // Garis di antara opsi
-                    ListTile(
-                      leading: Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(80, 217, 192,
-                              1), // Warna latar belakang lingkaran
-                        ),
-                        child: Image.asset(
-                          'assets/icons/iconKertas.png', // Path ke gambar ikon
-                          width: 24, // Sesuaikan ukuran ikon
-                          height: 24,
-                        ),
-                      ),
-                      title: Text('Option 3'),
-                      onTap: () {
-                        // Logika ketika opsi dipilih
-                        setState(() {
-                          selectedOption = 'Option 3';
-                        });
-                      },
-                    ),
-                    // Tambahkan opsi lainnya sesuai kebutuhan
-                  ],
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -287,91 +288,21 @@ class _PickUpScreenState extends State<PickUpScreen> {
                           width: 24, // Sesuaikan ukuran ikon
                           height: 24,
                         ), // Icon di pojok kiri
-                        suffixIcon: IconButton(
-                          // Icon di pojok kanan
-                          icon: isOptionsVisible
-                              ? Icon(Icons.arrow_drop_down)
-                              : Icon(Icons.arrow_right),
-                          onPressed: () {
-                            // Toggle untuk menampilkan/sembunyikan opsi
-                            setState(() {
-                              isOptionsVisible = !isOptionsVisible;
-                            });
-                          },
-                        ),
+                        // suffixIcon: IconButton(
+                        //   // Icon di pojok kanan
+                        //   icon: isOptionsVisible
+                        //       ? Icon(Icons.arrow_drop_down)
+                        //       : Icon(Icons.arrow_right),
+                        //   onPressed: () {
+                        //     // Toggle untuk menampilkan/sembunyikan opsi
+                        //     setState(() {
+                        //       isOptionsVisible = !isOptionsVisible;
+                        //     });
+                        //   },
+                        // ),
                       ),
                     ),
                   ),
-                  // Menampilkan opsi jika isOptionsVisible bernilai true
-                  if (isOptionsVisible) ...[
-                    ListTile(
-                      leading: Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromRGBO(210, 231, 234, 1)),
-                        child: Image.asset(
-                          'assets/icons/iconBotolPlastik.png', // Path ke gambar ikon
-                          width: 24, // Sesuaikan ukuran ikon
-                          height: 24,
-                        ),
-                      ),
-                      title: Text('Option 1'),
-                      onTap: () {
-                        // Logika ketika opsi dipilih
-                        setState(() {
-                          selectedOption = 'Option 1';
-                        });
-                      },
-                    ),
-                    Divider(), // Garis di antara opsi
-                    ListTile(
-                      leading: Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(108, 196, 161,
-                              1), // Warna latar belakang lingkaran
-                        ),
-                        child: Image.asset(
-                          'assets/icons/iconBotolKaca.png', // Path ke gambar ikon
-                          width: 24, // Sesuaikan ukuran ikon
-                          height: 24,
-                        ),
-                      ),
-                      title: Text('Option 2'),
-                      onTap: () {
-                        // Logika ketika opsi dipilih
-                        setState(() {
-                          selectedOption = 'Option 2';
-                        });
-                      },
-                    ),
-                    Divider(), // Garis di antara opsi
-                    ListTile(
-                      leading: Container(
-                        padding: EdgeInsets.all(4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(80, 217, 192,
-                              1), // Warna latar belakang lingkaran
-                        ),
-                        child: Image.asset(
-                          'assets/icons/iconKertas.png', // Path ke gambar ikon
-                          width: 24, // Sesuaikan ukuran ikon
-                          height: 24,
-                        ),
-                      ),
-                      title: Text('Option 3'),
-                      onTap: () {
-                        // Logika ketika opsi dipilih
-                        setState(() {
-                          selectedOption = 'Option 3';
-                        });
-                      },
-                    ),
-                    // Tambahkan opsi lainnya sesuai kebutuhan
-                  ],
                 ],
               ),
             ),

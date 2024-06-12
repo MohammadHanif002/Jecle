@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:jecle/views/pemanfaatan_sampah_anorganik_screen.dart';
+import 'tatacara_pemilahan_sampah_screen.dart'; // Pastikan Anda mengimpor file baru yang telah dibuat
+import 'package:jecle/views/tatacara_pemilahan_sampah_screen.dart';
+import 'package:jecle/views/pemanfaatan_sampah_organik_screen.dart';
+import 'package:jecle/views/pentingnya_daur_ulang_sampah_screen.dart';
 
 class PengelolaanSampahScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(94, 119, 216, 1),
+                Color.fromRGBO(48, 133, 195, 1),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+        ),
         title: Text('Panduan Pengelolaan Sampah'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -22,7 +39,12 @@ class PengelolaanSampahScreen extends StatelessWidget {
                 'Berikut adalah sedikit panduan mengenai cara memilah sampah dari Go-Trash.',
             icon: Icons.recycling,
             onTap: () {
-              // Navigate to the detail screen or show more information
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TataCaraPemilahanSampahScreen(),
+                ),
+              );
             },
           ),
           SampahOption(
@@ -31,25 +53,39 @@ class PengelolaanSampahScreen extends StatelessWidget {
                 'Berikut adalah rekomendasi bagaimana cara kita memanfaatkan sampah anorganik.',
             icon: Icons.delete,
             onTap: () {
-              // Navigate to the detail screen or show more information
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PemanfaatanSampahAnorganikScreen(),
+                ),
+              );
             },
           ),
           SampahOption(
-            title: 'Pemanfaatan Sampah Organik',
-            description:
-                'Berikut adalah rekomendasi bagaimana cara kita memanfaatkan sampah organik.',
-            icon: Icons.eco,
-            onTap: () {
-              // Navigate to the detail screen or show more information
-            },
-          ),
+              title: 'Pemanfaatan Sampah Organik',
+              description:
+                  'Berikut adalah rekomendasi bagaimana cara kita memanfaatkan sampah organik.',
+              icon: Icons.eco,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PemanfaatanSampahOrganikScreen(),
+                  ),
+                );
+              }),
           SampahOption(
             title: 'Pentingnya Daur Ulang Sampah',
             description:
                 'Berikut adalah rekomendasi bagaimana cara kita memanfaatkan sampah anorganik.',
             icon: Icons.autorenew,
             onTap: () {
-              // Navigate to the detail screen or show more information
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PentingnyaDaurUlangSampahScreen(),
+                ),
+              );
             },
           ),
         ],

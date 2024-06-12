@@ -1,7 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:jecle/views/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jecle/views/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _login(BuildContext context) async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Email and password cannot be empty')),
+      );
+      return;
+    }
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      // Gunakan userCredential di sini jika diperlukan
+      print('User UID: ${userCredential.user?.uid}');
+      // Navigasi ke layar utama atau tampilkan pesan sukses
+      Navigator.of(context).pop();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login successful')),
+      );
+    } catch (e) {
+      // Tampilkan pesan error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +104,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey[300],
@@ -84,6 +124,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   TextFormField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
@@ -117,13 +158,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                          ),
-                        );
+                        _login(context); // Panggil metode _login
                         // Implement login logic here
                       },
                       child: Text(

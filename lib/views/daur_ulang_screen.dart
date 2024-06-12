@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jecle/views/home_screen.dart';
+import 'package:jecle/views/checkout_screen.dart';
 
-class DaurUlangScreen extends StatelessWidget {
+class DaurUlangScreen extends StatefulWidget {
+  @override
+  _DaurUlangScreenState createState() => _DaurUlangScreenState();
+}
+
+class _DaurUlangScreenState extends State<DaurUlangScreen> {
   final List<Product> products = [
     Product(
       name: 'Lampu Botol Kerip-kerlip',
@@ -34,6 +42,59 @@ class DaurUlangScreen extends StatelessWidget {
     ),
   ];
 
+  List<Product> cart = [];
+  double _saldo = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSaldo();
+  }
+
+  void _loadSaldo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _saldo = prefs.getDouble('saldo') ?? 0.0;
+    });
+  }
+
+  void addToCart(Product product) {
+    setState(() {
+      // Check if product already in cart, increase quantity if true
+      final existingProduct = cart.firstWhere(
+        (p) => p.name == product.name,
+        orElse: () => Product(name: '', imageUrl: '', price: 0),
+      );
+      if (existingProduct.name != '') {
+        existingProduct.quantity += 1;
+      } else {
+        cart.add(product);
+      }
+    });
+  }
+
+  void removeFromCart(Product product) {
+    setState(() {
+      cart.remove(product);
+    });
+  }
+
+  void checkout() {
+    if (cart.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Keranjang kosong!')),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CheckoutScreen(cart: cart, saldo: _saldo),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +111,14 @@ class DaurUlangScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: Row(
-          children: [
-            Text('Daur Ulang'),
-          ],
-        ),
+        title: Text('Daur Ulang'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            color: Color.fromRGBO(255, 255, 255, 1),
+            onPressed: checkout,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -108,7 +172,12 @@ class DaurUlangScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                // Implementasi logika beli
+                                addToCart(product);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          '${product.name} ditambahkan ke keranjang')),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -139,10 +208,12 @@ class Product {
   final String name;
   final String imageUrl;
   final double price;
+  int quantity;
 
   Product({
     required this.name,
     required this.imageUrl,
     required this.price,
+    this.quantity = 1,
   });
 }

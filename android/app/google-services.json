@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "762995342662",
+    "project_id": "jeclebase-8fe6f",
+    "storage_bucket": "jeclebase-8fe6f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762995342662:android:769cb98116d7bcd4ceb947",
+        "android_client_info": {
+          "package_name": "com.example.jecle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAClyBvQBvmnoe7aWxBiVDUHLXe9VaS0KI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

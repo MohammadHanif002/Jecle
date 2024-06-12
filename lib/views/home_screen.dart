@@ -3,6 +3,12 @@ import 'package:jecle/views/pengelolaan_sampah_screen.dart';
 import 'package:jecle/views/pickup_screen.dart';
 import 'package:jecle/views/article_screen.dart';
 import 'package:jecle/views/daur_ulang_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jecle/views/login_screen.dart';
+import 'package:jecle/views/profile_screen.dart'; 
+import 'package:jecle/views/saldo_screen.dart';
+import 'package:jecle/views/dompet_screen.dart';
+import 'package:jecle/views/qr_scanner_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,19 +17,115 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  String _username = 'Nama Pengguna';
+  double _saldo = 0.0;
+  double _dompet = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _username = prefs.getString('username') ?? 'Nama Pengguna';
+      _saldo = prefs.getDouble('saldo') ?? 0.0;
+      _dompet = prefs.getDouble('dompet') ?? 0.0;
+    });
+  }
 
   // List of colors for each bottom navigation bar item
   final List<Color> _itemColors = [
     Colors.blue, // Color for Home
     Colors.green, // Color for Scan
     Colors.red, // Color for Belanja
-    Colors.yellow, // Color for Profil
+    Colors.yellow, // Color for Exit
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 3) {
+      _showExitConfirmationDialog();
+    } else if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => QRScannerScreen()),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
+  void _showExitConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              "Konfirmasi",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          content: Text("Apakah Anda ingin keluar Aplikasi?"),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                      "Tidak",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                    child: Text(
+                      "Ya",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   // Helper function to build BottomNavigationBarItem with animated background color
@@ -51,16 +153,24 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.person,
-                    color: Color.fromRGBO(48, 133, 195, 1),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.person,
+                      color: Color.fromRGBO(48, 133, 195, 1),
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),
                 Text(
-                  'Nama Pengguna',
+                  _username,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -90,12 +200,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.attach_money, color: Colors.green),
-                          SizedBox(width: 5),
-                          Text('Saldo: Rp 100.000'),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SaldoScreen()),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.attach_money, color: Colors.green),
+                            SizedBox(width: 5),
+                            Text('Saldo: Rp ${_saldo.toStringAsFixed(0)}'),
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
@@ -107,12 +226,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Divider(height: 20, color: Colors.grey),
-                  Row(
-                    children: [
-                      Icon(Icons.account_balance_wallet, color: Colors.blue),
-                      SizedBox(width: 5),
-                      Text('Dompet: Rp 50.000'),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DompetScreen()),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.account_balance_wallet, color: Colors.blue),
+                        SizedBox(width: 5),
+                        Text('Dompet: Rp ${_dompet.toStringAsFixed(0)}'),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -302,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildBottomNavigationBarItem(Icons.home, 'Home', 0),
           _buildBottomNavigationBarItem(Icons.qr_code_scanner, 'Scan', 1),
           _buildBottomNavigationBarItem(Icons.shopping_cart, 'Belanja', 2),
-          _buildBottomNavigationBarItem(Icons.person, 'Profil', 3),
+          _buildBottomNavigationBarItem(Icons.exit_to_app, 'Exit', 3),
         ],
       ),
     );
